@@ -1,4 +1,5 @@
 ﻿using MDA_Restaurant.Models;
+using MDA_Restaurant.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +26,24 @@ namespace MDA_Restaurant
         {
             Console.WriteLine("Добрый день! Подождите секунду, я подберу столик и подтвержу вашу бронь. Оставайтесь на линии.");
 
-            var table = _tables.FirstOrDefault(t => t.SeatsCount >= countOfPersons && t.State == State.Free);
-            table?.SetState(State.Booked);
+            Table? table = null;
 
-            Thread.Sleep(1000 * 5);
+            Thread.Sleep(1000 * 3);
 
-            Console.WriteLine(table is null
-                ? $"Извините, но сейчас все столики заняты."
-                : $"Готово! Для вас забронирован столик номер {table.Id}.");
+            lock (_tables)
+            {
+                table = _tables.FirstOrDefault(t => t.SeatsCount >= countOfPersons && t.State == State.Free);
+                table?.SetState(State.Booked);
+            }
+
+            //Console.WriteLine(table is null
+            //    ? $"Извините, но сейчас все столики заняты."
+            //    : $"Готово! Для вас забронирован столик номер {table.Id}.");
+
+            Task.Run(() =>
+            {
+                NotificationFactory.GetNotificationMethod(NotificationType.Phone).BookingNotification(table);
+            });
         }
 
         public void BookFreeTableAsync(int countOfPersons)
@@ -41,14 +52,24 @@ namespace MDA_Restaurant
 
             Task.Run(async () =>
             {
-                var table = _tables.FirstOrDefault(t => t.SeatsCount >= countOfPersons && t.State == State.Free);
-                table?.SetState(State.Booked);
+                Table? table = null;
 
                 await Task.Delay(1000 * 5);
 
-                Console.WriteLine(table is null
-                    ? $"УВЕДОМЛЕНИЕ: Извините, но сейчас все столики заняты."
-                    : $"УВЕДОМЛЕНИЕ: Готово! Для вас забронирован столик номер {table.Id}.");
+                lock (_tables)
+                {
+                    table = _tables.FirstOrDefault(t => t.SeatsCount >= countOfPersons && t.State == State.Free);
+                    table?.SetState(State.Booked);
+                }
+
+                //Console.WriteLine(table is null
+                //    ? $"УВЕДОМЛЕНИЕ: Извините, но сейчас все столики заняты."
+                //    : $"УВЕДОМЛЕНИЕ: Готово! Для вас забронирован столик номер {table.Id}.");
+
+                _ = Task.Run(() =>
+                {
+                    NotificationFactory.GetNotificationMethod(NotificationType.SMS).BookingNotification(table);
+                });
 
             });
         }
@@ -57,14 +78,24 @@ namespace MDA_Restaurant
         {
             Console.WriteLine("Добрый день! Подождите секунду, я проверю вашу бронь. Оставайтесь на линии.");
 
-            var table = _tables.FirstOrDefault(t => t.Id >= tableId  && t.State == State.Booked);
-            table?.SetState(State.Free);
+            Table? table = null;
 
-            Thread.Sleep(1000 * 5);
+            Thread.Sleep(1000 * 3);
 
-            Console.WriteLine(table is null
-                ? $"Извините, но столик с номером {tableId} не был забронирован."
-                : $"Готово! Бронь для столика номер {table.Id} успешно аннулирована.");
+            lock (_tables)
+            {
+                table = _tables.FirstOrDefault(t => t.Id >= tableId && t.State == State.Booked);
+                table?.SetState(State.Free);
+            }
+
+            //Console.WriteLine(table is null
+            //    ? $"Извините, но столик с номером {tableId} не был забронирован."
+            //    : $"Готово! Бронь для столика номер {table.Id} успешно аннулирована.");
+
+            Task.Run(() =>
+            {
+                NotificationFactory.GetNotificationMethod(NotificationType.Phone).CancelBookingNotification(tableId, table);
+            });
         }
 
         public void BookTableCancelAsync(int tableId)
@@ -73,16 +104,37 @@ namespace MDA_Restaurant
 
             Task.Run(async () =>
             {
-                var table = _tables.FirstOrDefault(t => t.Id >= tableId && t.State == State.Booked);
-                table?.SetState(State.Free);
+                Table? table = null;
 
                 await Task.Delay(1000 * 5);
 
-                Console.WriteLine(table is null
-                    ? $"УВЕДОМЛЕНИЕ: Извините, но столик с номером {tableId} не был забронирован."
-                    : $"УВЕДОМЛЕНИЕ: Готово! Бронь для столика номер {table.Id} успешно аннулирована.");
+                lock (_tables)
+                {
+                    table = _tables.FirstOrDefault(t => t.Id >= tableId && t.State == State.Booked);
+                    table?.SetState(State.Free);
+                }
+
+                //Console.WriteLine(table is null
+                //    ? $"УВЕДОМЛЕНИЕ: Извините, но столик с номером {tableId} не был забронирован."
+                //    : $"УВЕДОМЛЕНИЕ: Готово! Бронь для столика номер {table.Id} успешно аннулирована.");
+
+                _ = Task.Run(() =>
+                {
+                    NotificationFactory.GetNotificationMethod(NotificationType.SMS).CancelBookingNotification(tableId, table);
+                });
             });
 
         }
+
+        public void CancelAllBookings(Object stateInfo)
+        {
+            lock (_tables)
+            {
+                _tables.ForEach(t => { t.SetState(State.Free); });
+            }
+
+            Console.WriteLine("*** Все резервирования отменены *** ");
+        }
+        
     }
 }

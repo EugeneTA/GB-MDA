@@ -18,7 +18,6 @@ namespace MDA_Restaurant.Notifications
 
         public void CancelBookingNotification(int tableIdToCancel, Table table)
         {
-            Thread.Sleep(1000 * 5);
             Console.WriteLine(table is null
                 ? $"Извините, но столик с номером {tableIdToCancel} не был забронирован."
                 : $"Готово! Бронь для столика номер {table.Id} успешно аннулирована.");

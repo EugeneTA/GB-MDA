@@ -12,6 +12,8 @@ namespace MDA_Restaurant
 
             Restaurant restaurant = new Restaurant();
 
+            Timer timer = new Timer(restaurant.CancelAllBookings, new AutoResetEvent(false), 1000*20, 1000*40);
+
             while (true)
             {
                 Console.WriteLine("Добрый день! Выберите действие:\n1 - Забронировать столик с уведомлением по смс (асинхронно)" +
