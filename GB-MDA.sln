@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDA-Restaurant", "MDA-Restaurant\MDA-Restaurant.csproj", "{C2067A6A-6678-419F-9784-A7A1A1D81481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDA-Restaurant", "MDA-Restaurant\MDA-Restaurant.csproj", "{C2067A6A-6678-419F-9784-A7A1A1D81481}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lesson_02", "Lesson_02", "{F37370C8-3853-4655-855B-6028A3AB01C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging", "Lesson_02\Messaging\Messaging.csproj", "{DC3C36BB-5821-4FE2-950C-53BF026847BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantBooking", "Lesson_02\RestaurantBooking\RestaurantBooking.csproj", "{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Notification", "Lesson_02\Restaurant.Notification\Restaurant.Notification.csproj", "{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,26 @@ Global
 		{C2067A6A-6678-419F-9784-A7A1A1D81481}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2067A6A-6678-419F-9784-A7A1A1D81481}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2067A6A-6678-419F-9784-A7A1A1D81481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC3C36BB-5821-4FE2-950C-53BF026847BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC3C36BB-5821-4FE2-950C-53BF026847BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC3C36BB-5821-4FE2-950C-53BF026847BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC3C36BB-5821-4FE2-950C-53BF026847BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC3C36BB-5821-4FE2-950C-53BF026847BF} = {F37370C8-3853-4655-855B-6028A3AB01C4}
+		{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD} = {F37370C8-3853-4655-855B-6028A3AB01C4}
+		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA} = {F37370C8-3853-4655-855B-6028A3AB01C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {691AD0D8-BC88-42ED-B390-4CACE582B5C7}
