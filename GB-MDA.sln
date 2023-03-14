@@ -7,11 +7,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDA-Restaurant", "MDA-Resta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lesson_02", "Lesson_02", "{F37370C8-3853-4655-855B-6028A3AB01C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging", "Lesson_02\Messaging\Messaging.csproj", "{DC3C36BB-5821-4FE2-950C-53BF026847BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messaging", "Lesson_02\Messaging\Messaging.csproj", "{DC3C36BB-5821-4FE2-950C-53BF026847BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantBooking", "Lesson_02\RestaurantBooking\RestaurantBooking.csproj", "{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantBooking", "Lesson_02\RestaurantBooking\RestaurantBooking.csproj", "{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Notification", "Lesson_02\Restaurant.Notification\Restaurant.Notification.csproj", "{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Notification", "Lesson_02\Restaurant.Notification\Restaurant.Notification.csproj", "{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lesson_03", "Lesson_03", "{E0677D1E-FCF2-4BC1-8242-BB02991B893F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Notification", "Lesson_03\Restaurant.Notification\Restaurant.Notification.csproj", "{6BEF4F1D-74A0-4209-B67E-EF0A22150D70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Messages", "Lesson_03\Restaurant.Messages\Restaurant.Messages.csproj", "{970FA760-D23A-46EE-B8DB-28644603B338}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Booking", "Lesson_03\Restaurant.Booking\Restaurant.Booking.csproj", "{1072D180-90BD-4558-B0E3-CADDEBBE531D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Kitchen", "Lesson_03\Restaurant.Kitchen\Restaurant.Kitchen.csproj", "{4F80ABAE-CB81-4BEC-8EAF-48CF76E10BA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +45,22 @@ Global
 		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BEF4F1D-74A0-4209-B67E-EF0A22150D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BEF4F1D-74A0-4209-B67E-EF0A22150D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BEF4F1D-74A0-4209-B67E-EF0A22150D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BEF4F1D-74A0-4209-B67E-EF0A22150D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{970FA760-D23A-46EE-B8DB-28644603B338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970FA760-D23A-46EE-B8DB-28644603B338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970FA760-D23A-46EE-B8DB-28644603B338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{970FA760-D23A-46EE-B8DB-28644603B338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1072D180-90BD-4558-B0E3-CADDEBBE531D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1072D180-90BD-4558-B0E3-CADDEBBE531D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1072D180-90BD-4558-B0E3-CADDEBBE531D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1072D180-90BD-4558-B0E3-CADDEBBE531D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F80ABAE-CB81-4BEC-8EAF-48CF76E10BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F80ABAE-CB81-4BEC-8EAF-48CF76E10BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F80ABAE-CB81-4BEC-8EAF-48CF76E10BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F80ABAE-CB81-4BEC-8EAF-48CF76E10BA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +69,10 @@ Global
 		{DC3C36BB-5821-4FE2-950C-53BF026847BF} = {F37370C8-3853-4655-855B-6028A3AB01C4}
 		{A79FEC9D-97A2-43D9-86C0-9AD6C443BEAD} = {F37370C8-3853-4655-855B-6028A3AB01C4}
 		{2ABB2C14-C86D-4021-81FB-86545EBDA0BA} = {F37370C8-3853-4655-855B-6028A3AB01C4}
+		{6BEF4F1D-74A0-4209-B67E-EF0A22150D70} = {E0677D1E-FCF2-4BC1-8242-BB02991B893F}
+		{970FA760-D23A-46EE-B8DB-28644603B338} = {E0677D1E-FCF2-4BC1-8242-BB02991B893F}
+		{1072D180-90BD-4558-B0E3-CADDEBBE531D} = {E0677D1E-FCF2-4BC1-8242-BB02991B893F}
+		{4F80ABAE-CB81-4BEC-8EAF-48CF76E10BA6} = {E0677D1E-FCF2-4BC1-8242-BB02991B893F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {691AD0D8-BC88-42ED-B390-4CACE582B5C7}
