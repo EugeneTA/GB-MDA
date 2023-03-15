@@ -1,10 +1,10 @@
-﻿using MassTransit;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Restaurant.Kitchen.Consumers;
-using Restaurant.Kitchen.Services;
+using MassTransit;
+using MassTransit.MultiBus;
+using Restaurant.Notification.Consumers;
 
-namespace Restaurant.Kitchen
+namespace Restaurant.Notification
 {
     internal class Program
     {
@@ -16,16 +16,10 @@ namespace Restaurant.Kitchen
                 {
                     services.AddMassTransit(mt =>
                     {
-                        mt.AddConsumer<KitchenBookingRequestConsumer>().Endpoint(e => e.Temporary = true);
+                        mt.AddConsumer<NotifyConsumer>().Endpoint(e => e.Temporary = true);
 
-
-                        mt.UsingRabbitMq((context, config) =>
+                        mt.UsingRabbitMq((context, config) => 
                         {
-                            //config.Host("cow.rmq2.cloudamqp.com", "srgicxjt", h => {
-                            //    h.Username("srgicxjt");
-                            //    h.Password("ztUKEjNXQxDlxha5npbLMSKc-Ecrf_gx");
-                            //});
-
                             config.Host("localhost", "/", h => {
                                 h.Username("guest");
                                 h.Password("guest");
@@ -35,8 +29,8 @@ namespace Restaurant.Kitchen
                         });
                     });
 
-                    services.AddSingleton<Manager>();
-                    //services.AddHostedService<Worker>();
+                    services.AddSingleton<Notifier>();
+
                     services.AddOptions<MassTransitHostOptions>()
                             .Configure(options =>
                             {

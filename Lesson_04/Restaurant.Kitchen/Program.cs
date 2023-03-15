@@ -16,16 +16,10 @@ namespace Restaurant.Kitchen
                 {
                     services.AddMassTransit(mt =>
                     {
-                        mt.AddConsumer<KitchenBookingRequestConsumer>().Endpoint(e => e.Temporary = true);
-
+                        mt.AddConsumer<RestaurantBookingRequestconsumer>().Endpoint(e => e.Temporary = true);
 
                         mt.UsingRabbitMq((context, config) =>
                         {
-                            //config.Host("cow.rmq2.cloudamqp.com", "srgicxjt", h => {
-                            //    h.Username("srgicxjt");
-                            //    h.Password("ztUKEjNXQxDlxha5npbLMSKc-Ecrf_gx");
-                            //});
-
                             config.Host("localhost", "/", h => {
                                 h.Username("guest");
                                 h.Password("guest");

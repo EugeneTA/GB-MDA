@@ -4,7 +4,6 @@ using Microsoft.Extensions.Hosting;
 using Restaurant.Booking.Consumer;
 using Restaurant.Booking.Saga;
 using Restaurant.Booking.Services;
-using Restaurant.Notification.Consumers;
 
 internal class Program
 {
@@ -19,6 +18,7 @@ internal class Program
                 {
                     mt.AddConsumer<BookingRequestConsumer>().Endpoint(e => e.Temporary = true);
                     mt.AddConsumer<BookingRequestFaultConsumer>().Endpoint(e => e.Temporary = true);
+                    mt.AddConsumer<WaitingClientConsumer>().Endpoint(e => e.Temporary = true);
 
                     mt.AddSagaStateMachine<RestaurantBookingSaga, RestaurantBooking>()
                     .Endpoint(e => e.Temporary = true)
@@ -46,7 +46,7 @@ internal class Program
 
                 services.AddTransient<RestaurantBooking>();
                 services.AddTransient<RestaurantBookingSaga>();
-                services.AddTransient<RestaurantService>();
+                services.AddSingleton<RestaurantService>();
                 services.AddHostedService<Worker>();
 
                 services.AddOptions<MassTransitHostOptions>()
