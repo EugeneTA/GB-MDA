@@ -12,7 +12,6 @@ namespace Restaurant.Kitchen.Services
     public class Manager
     {
         public readonly IBus _bus;
-        public readonly ConcurrentDictionary<Guid, Dish?> _orders = new();
 
         public Manager(IBus bus)
         {
@@ -24,18 +23,5 @@ namespace Restaurant.Kitchen.Services
             return true;
         }
 
-        public void DishInStopList(Dish dish)
-        {
-
-            foreach (var order in _orders)
-            {
-                if (order.Value == dish)
-                {
-                    _bus.Publish<IKitchenAccident>(new KitchenAccident(order.Key, order.Value));
-                    _orders.TryRemove(order);
-
-                }
-            }
-        }
     }
 }

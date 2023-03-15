@@ -22,10 +22,16 @@ namespace Restaurant.Notification
 
                         mt.UsingRabbitMq((context, config) => 
                         {
-                            config.Host("cow.rmq2.cloudamqp.com", "srgicxjt", h => {
-                                h.Username("srgicxjt");
-                                h.Password("ztUKEjNXQxDlxha5npbLMSKc-Ecrf_gx");
+                            //config.Host("cow.rmq2.cloudamqp.com", "srgicxjt", h => {
+                            //    h.Username("srgicxjt");
+                            //    h.Password("ztUKEjNXQxDlxha5npbLMSKc-Ecrf_gx");
+                            //});
+
+                            config.Host("localhost", "/", h => {
+                                h.Username("guest");
+                                h.Password("guest");
                             });
+
                             config.ConfigureEndpoints(context);
                         });
                     });

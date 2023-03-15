@@ -5,6 +5,7 @@ using Restaurant.Booking.Config;
 using Restaurant.Booking.Models;
 using Restaurant.Messages;
 using System.Text;
+using static MassTransit.ValidationResultExtensions;
 using State = Restaurant.Booking.Models.State;
 
 namespace Restaurant.Booking.Services
@@ -35,27 +36,31 @@ namespace Restaurant.Booking.Services
                 var dateTimeNow = DateTime.Now;
 
                 Order order = new Order(NewId.NextGuid(), NewId.NextGuid(), _restaurant.GetRandomDish());
+                await _bus.Publish( 
+                    (IBookingRequest) new BookingRequest(order.OrderId, order.ClientId, order.Dish, dateTimeNow),
+                    stoppingToken
+                    );
 
-                var result = await _restaurant.BookFreeTableAsync(1, order);
+                //var result = await _restaurant.BookFreeTableAsync(1, order);
 
-                if (result != null) 
-                {
-                    Console.WriteLine($"Заказ {order.OrderId}. Бронируем столик номер {result.Id}. Предзаказ {result.Order.Dish}");
-                    await _bus.Publish(
-                            new TableBooked(result.Order.OrderId, result.Order.ClientId, result.State == State.Booked ? true : false, result.Order.Dish),
-                            context => context.Durable = false,
-                            stoppingToken
-                            );
-                }
-                else
-                {
-                    Console.WriteLine($"Заказ {order.OrderId}. Все столы забронированы.");
-                    await _bus.Publish(
-                            new TableBooked(order.OrderId, order.ClientId, false),
-                            context => context.Durable = false,
-                            stoppingToken
-                            );
-                }
+                //if (result != null) 
+                //{
+                //    Console.WriteLine($"Заказ {order.OrderId}. Бронируем столик номер {result.Id}. Предзаказ {result.Order.Dish}");
+                //    await _bus.Publish(
+                //            new TableBooked(result.Order.OrderId, result.Order.ClientId, result.State == State.Booked ? true : false, result.Order.Dish),
+                //            context => context.Durable = false,
+                //            stoppingToken
+                //            );
+                //}
+                //else
+                //{
+                //    Console.WriteLine($"Заказ {order.OrderId}. Все столы забронированы.");
+                //    await _bus.Publish(
+                //            new TableBooked(order.OrderId, order.ClientId, false),
+                //            context => context.Durable = false,
+                //            stoppingToken
+                //            );
+                //}
             }
         }
     }
