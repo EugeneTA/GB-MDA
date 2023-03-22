@@ -19,7 +19,7 @@ namespace Restaurant.Booking.Consumer
 
         public async Task Consume(ConsumeContext<IWaitingForClient> context)
         {
-            Console.WriteLine($"[OrderId: {context.Message.OrderId} ] Ожидаем клиента.");
+            Console.WriteLine($"[ OrderId: {context.Message.OrderId} ] Ожидаем клиента.");
             
             await Task.Delay(new Random().Next(7000,15000));
 

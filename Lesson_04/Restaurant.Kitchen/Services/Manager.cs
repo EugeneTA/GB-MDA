@@ -20,7 +20,8 @@ namespace Restaurant.Kitchen.Services
 
         public bool CheckKitchenReady(Guid orderId, Dish? dish)
         {
-            return true;
+            // Кухня не принимает заказы на лазанью
+            return dish == Dish.Lasagna ? false : true;
         }
 
     }

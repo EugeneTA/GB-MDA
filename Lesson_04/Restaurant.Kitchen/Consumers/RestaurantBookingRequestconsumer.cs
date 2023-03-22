@@ -5,11 +5,11 @@ using Restaurant.Messages;
 
 namespace Restaurant.Kitchen.Consumers
 {
-    public class RestaurantBookingRequestconsumer : IConsumer<IBookingRequest>
+    public class RestaurantBookingRequestConsumer : IConsumer<IBookingRequest>
     {
         private readonly Manager _manager;
 
-        public RestaurantBookingRequestconsumer(Manager manager)
+        public RestaurantBookingRequestConsumer(Manager manager)
         {
             _manager = manager;
         }
@@ -18,15 +18,16 @@ namespace Restaurant.Kitchen.Consumers
         {
             var rnd = new Random().Next(1000, 10000);
 
-            Console.WriteLine($"[OrderId {context.Message.OrderId} ] [ {context.Message.Created} ] Проверка на кухне займет: {rnd}");
-
-            await Task.Delay(rnd);
+            //Console.WriteLine($"[OrderId {context.Message.OrderId} ] [ {context.Message.Created} ] Проверка на кухне займет: {rnd}");
+            //await Task.Delay(rnd);
 
             var result = _manager.CheckKitchenReady(context.Message.OrderId, context.Message.PreOrder);
 
-            Console.WriteLine($"[OrderId {context.Message.OrderId} ] [ {context.Message.Created} ] Проверка закончена");
+            if (result == false) { throw new Exception("Lazagnia in stop list"); }
 
             await context.Publish<IKitchenReady>(new KitchenReady(context.Message.OrderId, result));
+
+            Console.WriteLine($"[OrderId {context.Message.OrderId} ] [ {context.Message.Created} ] Предварительный заказ на: {context.Message.PreOrder}");
         }
     }
 }
