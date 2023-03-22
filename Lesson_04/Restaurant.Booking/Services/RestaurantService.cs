@@ -1,7 +1,6 @@
 ﻿using MassTransit;
 using Restaurant.Booking.Models;
 using Restaurant.Messages;
-using System.Collections.Concurrent;
 using State = Restaurant.Booking.Models.State;
 
 namespace Restaurant.Booking.Services
@@ -10,25 +9,23 @@ namespace Restaurant.Booking.Services
     {
         private readonly IBus _bus;
         private readonly IList<Table> _tables;
-        private readonly int t;
 
         public RestaurantService(IBus bus)
         {
             _tables = new List<Table>(10);
 
-            for (int i = 1; i <= 3; i++)
+            for (int i = 1; i <= 10; i++)
             {
                 Table table = new Table(i);
                 _tables.Add(table);
             }
 
-            t = 10;
             _bus = bus;
         }
 
         public async Task<Table?> BookFreeTableAsync(int countOfPersons, Order order)
         {
-            Console.WriteLine("Добрый день! Спасибо за обращение, я подберу столик и подтвержу вашу бронь. Вам придет уведомление.");
+            Console.WriteLine($"[ OrderId: {order.OrderId} ] Добрый день! Спасибо за обращение, я подберу столик и подтвержу вашу бронь. Вам придет уведомление.");
 
             Table? table = null;
 
@@ -61,11 +58,12 @@ namespace Restaurant.Booking.Services
         {
             Random random = new Random();
 
-            switch(random.Next(1, 4))
+            switch(random.Next(1, 5))
             {
                 case 1: return Dish.CesarSalad;
                 case 2: return Dish.PizzaMargarita;
                 case 3: return Dish.RibyeSteak;
+                case 4: return Dish.Lasagna;
                 default: return Dish.Empty;
             }
         }

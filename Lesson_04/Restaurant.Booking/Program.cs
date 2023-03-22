@@ -16,12 +16,49 @@ internal class Program
             {
                 services.AddMassTransit(mt =>
                 {
-                    mt.AddConsumer<BookingRequestConsumer>().Endpoint(e => e.Temporary = true);
-                    mt.AddConsumer<BookingRequestFaultConsumer>().Endpoint(e => e.Temporary = true);
-                    mt.AddConsumer<WaitingClientConsumer>().Endpoint(e => e.Temporary = true);
+                    mt.AddConsumer<BookingRequestConsumer>(c =>
+                    {
+                        // Повторная отправка сообщений второго уровня
+                        c.UseScheduledRedelivery(r =>
+                        {
+                            r.Intervals(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+                        });
+                        // Повторная отправка при кратковременном отсутствии связи
+                        c.UseMessageRetry(r =>
+                        {
+                            r.Incremental(1, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
+                        });
+                    });
+                    //.Endpoint(e => e.Temporary = true);
+
+                    mt.AddConsumer<BookingRequestFaultConsumer>(c =>
+                    {
+                        //c.UseScheduledRedelivery(r =>
+                        //{
+                        //    r.Intervals(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15));
+                        //});
+                        //c.UseMessageRetry(r =>
+                        //{
+                        //    r.Incremental(2, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(2));
+                        //});
+                    });
+                    //.Endpoint(e => e.Temporary = true);
+
+                    mt.AddConsumer<WaitingClientConsumer>(c =>
+                    {
+                        c.UseScheduledRedelivery(r =>
+                        {
+                            r.Intervals(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+                        });
+                        c.UseMessageRetry(r =>
+                        {
+                            r.Incremental(1, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
+                        });
+                    });
+                    //.Endpoint(e => e.Temporary = true);
 
                     mt.AddSagaStateMachine<RestaurantBookingSaga, RestaurantBooking>()
-                    .Endpoint(e => e.Temporary = true)
+                    //.Endpoint(e => e.Temporary = true)
                     .InMemoryRepository();
 
                     mt.AddDelayedMessageScheduler();

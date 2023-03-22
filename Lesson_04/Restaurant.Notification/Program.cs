@@ -16,7 +16,20 @@ namespace Restaurant.Notification
                 {
                     services.AddMassTransit(mt =>
                     {
-                        mt.AddConsumer<NotifyConsumer>().Endpoint(e => e.Temporary = true);
+                        mt.AddConsumer<NotifyConsumer>(c =>
+                        {
+                            // Повторная отправка сообщений второго уровня
+                            c.UseScheduledRedelivery(r =>
+                            {
+                                r.Intervals(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+                            });
+                            // Повторная отправка при кратковременном отсутствии связи
+                            c.UseMessageRetry(r =>
+                            {
+                                r.Incremental(1, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
+                            });
+                        });
+                        //.Endpoint(e => e.Temporary = true);
 
                         mt.UsingRabbitMq((context, config) => 
                         {
@@ -25,6 +38,7 @@ namespace Restaurant.Notification
                                 h.Password("guest");
                             });
 
+                            config.UseInMemoryOutbox();
                             config.ConfigureEndpoints(context);
                         });
                     });

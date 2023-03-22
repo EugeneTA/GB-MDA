@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Messages
 {
-    public enum Dish
+    public interface IBookingCancellation
     {
-        Empty,
-        CesarSalad,
-        PizzaMargarita,
-        RibyeSteak,
-        Lasagna
+        public Guid OrderId { get; }
     }
 }

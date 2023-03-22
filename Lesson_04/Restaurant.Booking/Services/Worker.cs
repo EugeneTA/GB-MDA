@@ -24,15 +24,18 @@ namespace Restaurant.Booking.Services
             Console.OutputEncoding = Encoding.UTF8;
             while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(10000, stoppingToken);
-                Console.WriteLine("Добрый день! Желаете забронировать столик?");
-                var dateTimeNow = DateTime.Now;
+                Console.WriteLine();
+                Console.Write("Добрый день! Желаете забронировать столик?  ");
+                Console.ReadKey();
 
+                var dateTimeNow = DateTime.Now;
                 Order order = new Order(NewId.NextGuid(), NewId.NextGuid(), _restaurant.GetRandomDish());
                 await _bus.Publish( 
                     (IBookingRequest) new BookingRequest(order.OrderId, order.ClientId, order.Dish, dateTimeNow, TimeSpan.FromSeconds(new Random().Next(7,15))),
                     stoppingToken
                     );
+
+                await Task.Delay(15000, stoppingToken);
             }
         }
     }
