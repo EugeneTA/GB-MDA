@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Hosting;
 using Restaurant.Booking.Models;
-using Restaurant.Messages;
+using Restaurant.Messages.Booking;
 using System.Text;
 
 namespace Restaurant.Booking.Services

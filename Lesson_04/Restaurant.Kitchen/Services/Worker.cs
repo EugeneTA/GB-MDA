@@ -1,7 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Restaurant.Messages;
+using Restaurant.Messages.Kitchen;
 using System.Text;
 
 namespace Restaurant.Kitchen.Services

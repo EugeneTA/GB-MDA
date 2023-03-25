@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MassTransit;
 using MassTransit.MultiBus;
 using Restaurant.Notification.Consumers;
+using Restaurant.IdempotentLibrary.Repositories;
+using Restaurant.IdempotentLibrary.Models;
 
 namespace Restaurant.Notification
 {
@@ -43,7 +45,14 @@ namespace Restaurant.Notification
                         });
                     });
 
+                    // Сервис уведомления пользователя
                     services.AddSingleton<Notifier>();
+
+                    // Репозиторий полученных сообщений уведомления пользователя (тестовая реализация идемпотентности)
+                    services.AddSingleton<IInMemoryRepository<NotifyModel>, InMemoryRepository<NotifyModel>>();
+
+                    // Очищаем репозиторий полученных сообщений уведомления пользователя каждые 30 секунд. 
+                    services.AddHostedService<ClearInMemoryRepWorker>();
 
                     services.AddOptions<MassTransitHostOptions>()
                             .Configure(options =>

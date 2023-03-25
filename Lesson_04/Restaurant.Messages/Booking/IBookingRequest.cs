@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Restaurant.Messages.Kitchen;
 
-namespace Restaurant.Messages
+namespace Restaurant.Messages.Booking
 {
     public interface IBookingRequest
     {
@@ -12,6 +8,6 @@ namespace Restaurant.Messages
         public Guid ClientId { get; }
         public Dish PreOrder { get; }
         public DateTime Created { get; }
-        public TimeSpan  ArrivingTime { get; }
+        public TimeSpan ArrivingTime { get; }
     }
 }

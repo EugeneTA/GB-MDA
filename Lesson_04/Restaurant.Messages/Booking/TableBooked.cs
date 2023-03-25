@@ -1,12 +1,6 @@
-﻿using Restaurant.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Restaurant.Messages.Kitchen;
 
-namespace Restaurant.Messages
+namespace Restaurant.Messages.Booking
 {
     public class TableBooked : ITableBooked
     {

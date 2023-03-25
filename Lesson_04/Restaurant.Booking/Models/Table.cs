@@ -1,11 +1,4 @@
-﻿using Restaurant.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurant.Booking.Models
+﻿namespace Restaurant.Booking.Models
 {
     public class Table
     {

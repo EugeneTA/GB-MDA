@@ -1,7 +1,6 @@
-﻿
-namespace Restaurant.Messages
+﻿namespace Restaurant.Messages.Client
 {
-    public class ClientArrived: IClientArrived
+    public class ClientArrived : IClientArrived
     {
         public Guid OrderId { get; }
         public Guid ClientId { get; }

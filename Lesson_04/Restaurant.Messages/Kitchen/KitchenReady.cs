@@ -1,4 +1,4 @@
-﻿namespace Restaurant.Messages
+﻿namespace Restaurant.Messages.Kitchen
 {
     public class KitchenReady : IKitchenReady
     {

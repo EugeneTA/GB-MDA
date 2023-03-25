@@ -1,6 +1,9 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Restaurant.Booking.Services;
+using Restaurant.IdempotentLibrary.Models;
+using Restaurant.IdempotentLibrary.Repositories;
 using Restaurant.Kitchen.Consumers;
 using Restaurant.Kitchen.Services;
 
@@ -44,7 +47,15 @@ namespace Restaurant.Kitchen
                     });
 
                     services.AddSingleton<Manager>();
+
+                    // Репозиторий полученных сообщений для запроса бронирования (тестовая реализация идемпотентности)
+                    services.AddSingleton<IInMemoryRepository<BookingRequestModel>, InMemoryRepository<BookingRequestModel>>();
+
+                    // Очищаем репозиторий полученных сообщений о бронировании каждые 30 секунд. 
+                    services.AddHostedService<ClearInMemoryRepWorker>();
+                    
                     //services.AddHostedService<Worker>();
+                    
                     services.AddOptions<MassTransitHostOptions>()
                             .Configure(options =>
                             {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Restaurant.Messages.Kitchen;
 
-namespace Restaurant.Messages
+namespace Restaurant.Messages.Booking
 {
-    public class BookingRequest: IBookingRequest
+    public class BookingRequest : IBookingRequest
     {
         public Guid OrderId { get; }
         public Guid ClientId { get; }
