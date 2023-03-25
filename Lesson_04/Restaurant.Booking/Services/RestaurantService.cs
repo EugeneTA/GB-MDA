@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using Restaurant.Booking.Models;
-using Restaurant.Messages;
+using Restaurant.Messages.Kitchen;
 using State = Restaurant.Booking.Models.State;
 
 namespace Restaurant.Booking.Services

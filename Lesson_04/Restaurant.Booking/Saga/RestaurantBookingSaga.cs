@@ -1,6 +1,8 @@
 ﻿using MassTransit;
-using Restaurant.Messages;
-using System.Security.Cryptography.X509Certificates;
+using Restaurant.Messages.Booking;
+using Restaurant.Messages.Client;
+using Restaurant.Messages.Kitchen;
+using Restaurant.Messages.Notification;
 
 namespace Restaurant.Booking.Saga
 {
@@ -46,7 +48,7 @@ namespace Restaurant.Booking.Saga
             Schedule(() => BookingExpired,
                 x => x.ExpirationId, x =>
                 {
-                    x.Delay = TimeSpan.FromSeconds(60);
+                    x.Delay = TimeSpan.FromSeconds(15);
                     x.Received = e => e.CorrelateById(context => context.Message.OrderId);
                 });
 
@@ -86,7 +88,6 @@ namespace Restaurant.Booking.Saga
                 .Unschedule(BookingExpired)
                 .Publish(context => (INotify)new Notify(context.Instance.OrderId, context.Instance.ClientId, "Извините, но все столы заняты"))
                 .Finalize(),
-
 
                 // Подтверждение бронирования
                 When(BookingApproved)

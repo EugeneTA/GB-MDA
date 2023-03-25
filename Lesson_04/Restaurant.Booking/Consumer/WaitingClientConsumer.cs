@@ -1,12 +1,5 @@
 ﻿using MassTransit;
-using Restaurant.Booking.Models;
-using Restaurant.Booking.Services;
-using Restaurant.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Restaurant.Messages.Client;
 
 namespace Restaurant.Booking.Consumer
 {

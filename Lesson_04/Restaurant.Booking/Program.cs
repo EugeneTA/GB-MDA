@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using Restaurant.Booking.Consumer;
 using Restaurant.Booking.Saga;
 using Restaurant.Booking.Services;
+using Restaurant.IdempotentLibrary.Models;
+using Restaurant.IdempotentLibrary.Repositories;
 
 internal class Program
 {
@@ -65,11 +67,6 @@ internal class Program
 
                     mt.UsingRabbitMq((context, config) =>
                     {
-                        //config.Host("cow.rmq2.cloudamqp.com", "srgicxjt", h => {
-                        //    h.Username("srgicxjt");
-                        //    h.Password("ztUKEjNXQxDlxha5npbLMSKc-Ecrf_gx");
-                        //});
-
                         config.Host("localhost", "/", h => {
                             h.Username("guest");
                             h.Password("guest");
@@ -84,7 +81,15 @@ internal class Program
                 services.AddTransient<RestaurantBooking>();
                 services.AddTransient<RestaurantBookingSaga>();
                 services.AddSingleton<RestaurantService>();
+                
+                // Генерация запроса на бронирование стола каждые 15 секунд
                 services.AddHostedService<Worker>();
+
+                // Репозиторий полученных сообщений для запроса бронирования (тестовая реализация идемпотентности)
+                services.AddSingleton<IInMemoryRepository<BookingRequestModel>, InMemoryRepository<BookingRequestModel>>();
+
+                // Очищаем репозиторий полученных сообщений о бронировании каждые 30 секунд. 
+                services.AddHostedService<ClearInMemoryRepWorker>();
 
                 services.AddOptions<MassTransitHostOptions>()
                         .Configure(options =>

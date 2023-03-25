@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurant.Messages
+﻿namespace Restaurant.Messages.Client
 {
-    public class WaitingForClient: IWaitingForClient
+    public class WaitingForClient : IWaitingForClient
     {
         public Guid OrderId { get; }
         public Guid ClientId { get; }

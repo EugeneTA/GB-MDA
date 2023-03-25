@@ -1,6 +1,6 @@
-﻿namespace Restaurant.Booking.Models
+﻿namespace Restaurant.Messages.Client
 {
-    public interface IOrder
+    public interface IClientArriveExpired
     {
         public Guid OrderId { get; }
         public Guid ClientId { get; }

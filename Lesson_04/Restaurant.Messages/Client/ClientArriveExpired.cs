@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurant.Messages
+﻿namespace Restaurant.Messages.Client
 {
-    public class ClientArriveExpired: IClientArriveExpired
+    public class ClientArriveExpired : IClientArriveExpired
     {
         public Guid OrderId { get; }
         public Guid ClientId { get; }
