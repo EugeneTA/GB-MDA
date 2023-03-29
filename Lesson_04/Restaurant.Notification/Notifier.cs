@@ -1,12 +1,20 @@
-﻿namespace Restaurant.Notification
+﻿using Microsoft.Extensions.Logging;
+
+namespace Restaurant.Notification
 {
     public class Notifier
     {
+        private readonly ILogger<Notifier> _logger;
+
+        public Notifier(ILogger<Notifier> logger)
+        {
+            _logger = logger;
+        }
+
         public void Notify(Guid orderId, Guid clientId, string message)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.WriteLine($"[ OrderId: {orderId} ] Уважаемый клиент [ {clientId} ]! {message}");
-
+            _logger.Log(LogLevel.Information, $"[ OrderId: {orderId} ] Уважаемый клиент [ {clientId} ]! {message}");
         }
     }
 }

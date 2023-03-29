@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 using Restaurant.Booking.Models;
 using Restaurant.Booking.Services;
 using Restaurant.IdempotentLibrary.Models;
@@ -12,26 +13,28 @@ namespace Restaurant.Booking.Consumer
     {
         private readonly RestaurantService _restaurant;
         private readonly IInMemoryRepository<BookingRequestModel> _repository;
+        private readonly ILogger<BookingRequestConsumer> _logger;
 
         public BookingRequestConsumer(
             RestaurantService restaurant,
-            IInMemoryRepository<BookingRequestModel> repository)
+            IInMemoryRepository<BookingRequestModel> repository,
+            ILogger<BookingRequestConsumer> logger)
         {
             _restaurant = restaurant;
             _repository = repository;
-
+            _logger = logger;
         }
 
         public async Task Consume(ConsumeContext<IBookingRequest> context)
         {
-            Console.WriteLine($"[ OrderId: {context.Message.OrderId} ] Consume booking request");
+            _logger.Log(LogLevel.Information, $"[ OrderId: {context.Message.OrderId} ] Consume booking request");
 
             var model = _repository.Get().FirstOrDefault(i => i.OrderId == context.Message.OrderId);
             var t = model?.CheckMessage(context.MessageId.ToString());
 
             if (model != null && model.CheckMessage(context.MessageId.ToString()))
             {
-                Console.WriteLine($"[ OrderId: {context.Message.OrderId} ] [ MessageID {context.MessageId} ] Second request");
+                _logger.Log(LogLevel.Information, $"[ OrderId: {context.Message.OrderId} ] [ MessageID {context.MessageId} ] Second request");
                 return;
             }
 
@@ -44,7 +47,7 @@ namespace Restaurant.Booking.Consumer
                     context.MessageId.ToString()
                 );
 
-            Console.WriteLine($"[ OrderId: {context.Message.OrderId} ] [ MessageID {context.MessageId} ] First request");
+            _logger.Log(LogLevel.Information, $"[ OrderId: {context.Message.OrderId} ] [ MessageID {context.MessageId} ] First request");
 
             var resultModel = model?.Update(requestModel, context.MessageId.ToString()) ?? requestModel;
             
