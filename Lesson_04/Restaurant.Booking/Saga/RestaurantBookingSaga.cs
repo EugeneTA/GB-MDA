@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 using Restaurant.Messages.Booking;
 using Restaurant.Messages.Client;
 using Restaurant.Messages.Kitchen;
@@ -8,6 +9,8 @@ namespace Restaurant.Booking.Saga
 {
     public sealed class RestaurantBookingSaga: MassTransitStateMachine<RestaurantBooking>
     {
+        private readonly ILogger<RestaurantBookingSaga> _logger;
+
         public State AwaitingBookingApproved { get; private set; }
         public State AwaitingClientArrived { get; private set; }
         public Event<IBookingRequest> BookingRequested { get; private set; }
@@ -20,8 +23,10 @@ namespace Restaurant.Booking.Saga
         public Schedule<RestaurantBooking, IClientArriveExpired> ClientArriveExpired { get; private set; }
         public Event BookingApproved { get; private set; }
 
-        public RestaurantBookingSaga()
+        public RestaurantBookingSaga(ILogger<RestaurantBookingSaga> logger)
         {
+            _logger = logger;
+
             InstanceState(x => x.CurrentState);
 
             Event(() => BookingRequested,
@@ -67,7 +72,7 @@ namespace Restaurant.Booking.Saga
                     context.Instance.OrderId = context.Data.OrderId;
                     context.Instance.ClientId = context.Data.ClientId;
                     context.Instance.ArriveTimeout = context.Data.ArrivingTime;
-                    Console.WriteLine($"[ OrderId: {context.Instance.OrderId} ] Starting Saga: {context.Data.Created}");
+                    _logger.Log(LogLevel.Information, $"[ OrderId: {context.Instance.OrderId} ] Starting Saga: {context.Data.Created}");
                 })
                 .Schedule(BookingExpired, context => new BookingExpire(context.Instance.OrderId))
                 .TransitionTo(AwaitingBookingApproved)
@@ -78,7 +83,7 @@ namespace Restaurant.Booking.Saga
                 // В случае возникновения ошибки
                 When(BookingRequestFault)
                 .Unschedule(BookingExpired)
-                .Then(ctx => Console.WriteLine($"[ OrderId: {ctx.Instance.OrderId} ] Произошла ошибка!"))
+                .Then(ctx => _logger.Log(LogLevel.Error, $"[ OrderId: {ctx.Instance.OrderId} ] Произошла ошибка!"))
                 .Publish(ctx => (INotify)new Notify(ctx.Instance.OrderId, ctx.Instance.ClientId, $"Приносим свои извинения, забронировать стол не получилось."))
                 //.Publish(ctx => (IBookingCancellation)new BookingCancellation(ctx.Instance.OrderId))
                 .Finalize(),
@@ -103,7 +108,7 @@ namespace Restaurant.Booking.Saga
 
                 // Отмена заказа по таймауту (не пришли ответы от кухни или наличия свободных столов)
                 When(BookingExpired.Received)
-                .Then(context => Console.WriteLine($"[ OrderId: {context.Instance.OrderId} ] Отмена заказа {context.Instance.OrderId}"))
+                .Then(context => _logger.Log(LogLevel.Warning, $"[ OrderId: {context.Instance.OrderId} ] Отмена заказа {context.Instance.OrderId}"))
                 .Publish(context =>
                 (INotify)new Notify(context.Instance.OrderId, context.Instance.ClientId, $"Извините, ваш заказ отменен.")).Finalize()
             );
@@ -114,12 +119,12 @@ namespace Restaurant.Booking.Saga
                 // Гость пришел
                 When(ClientArrived)
                 .Unschedule(ClientArriveExpired)
-                .Then(context => Console.WriteLine($"[ OrderId: {context.Instance.OrderId} ] Гость {context.Instance.ClientId} прибыл."))
+                .Then(context => _logger.Log(LogLevel.Information, $"[ OrderId: {context.Instance.OrderId} ] Гость {context.Instance.ClientId} прибыл."))
                 .Finalize(),
 
                 // Гость опоздал
                 When(ClientArriveExpired.Received)
-                .Then(context => Console.WriteLine($"[ OrderId: {context.Instance.OrderId} ] Отмена заказа. Гость {context.Instance.ClientId} не пришел."))
+                .Then(context => _logger.Log(LogLevel.Information, $"[ OrderId: {context.Instance.OrderId} ] Отмена заказа. Гость {context.Instance.ClientId} не пришел."))
                 .Publish(context =>
                 (INotify)new Notify(context.Instance.OrderId, context.Instance.ClientId, $"Извините, но Вы не пришли в указанное время. Ваш заказ отменен.")).Finalize()
                ); 

@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 using Restaurant.Booking.Models;
 using Restaurant.Messages.Kitchen;
 using State = Restaurant.Booking.Models.State;
@@ -9,9 +10,13 @@ namespace Restaurant.Booking.Services
     {
         private readonly IBus _bus;
         private readonly IList<Table> _tables;
+        private readonly ILogger<RestaurantService> _logger;
 
-        public RestaurantService(IBus bus)
+        public RestaurantService(
+            IBus bus,
+            ILogger<RestaurantService> logger)
         {
+            _logger = logger;
             _tables = new List<Table>(10);
 
             for (int i = 1; i <= 10; i++)
@@ -25,7 +30,7 @@ namespace Restaurant.Booking.Services
 
         public async Task<Table?> BookFreeTableAsync(int countOfPersons, Order order)
         {
-            Console.WriteLine($"[ OrderId: {order.OrderId} ] Добрый день! Спасибо за обращение, я подберу столик и подтвержу вашу бронь. Вам придет уведомление.");
+            _logger.Log(LogLevel.Information, $"[ OrderId: {order.OrderId} ] Добрый день! Спасибо за обращение, я подберу столик и подтвержу вашу бронь. Вам придет уведомление.");
 
             Table? table = null;
 
@@ -48,7 +53,7 @@ namespace Restaurant.Booking.Services
                 table = _tables.FirstOrDefault(t => t?.Order?.OrderId == orderId);
                 table?.SetState(State.Free);
                 table?.ClearOrder();
-                Console.WriteLine($" [x] Отмена бронирования столика {table?.Id}");
+                _logger.Log(LogLevel.Information, $" [x] Отмена бронирования столика {table?.Id}");
             }
 
             return true;
